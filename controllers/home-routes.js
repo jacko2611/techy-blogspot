@@ -2,34 +2,70 @@ const router = require('express').Router();
 const { User } = require('../models');
 const withAuth = require('../utils/auth');
 
-// Prevent non logged in users from viewing the homepage
-router.get('/', withAuth, async (req, res) => {
+// Homepage route
+router.get('/', async (req, res) => {
   try {
-    const userData = await User.findAll({
-      attributes: { exclude: ['password'] },
-      order: [['name', 'ASC']],
+    const allPosts = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'name'],
+        },
+      ],
+      required: true,
     });
+  
+    const mappedPosts = allPosts.map((post => ({
+      id: post.id,
+      title: post.title,
+      created_date: post.createdAt,
+      updated_date: post.updatedAt,
+      user: post.user.name,
+    })))
 
-    const users = userData.map((project) => project.get({ plain: true }));
-
-    res.render('homepage', {
-      users,
-      // Pass the logged in flag to the template
-      logged_in: req.session.logged_in,
-    });
   } catch (err) {
+    console.error(err)
     res.status(500).json(err);
   }
 });
 
+// Login route
 router.get('/login', (req, res) => {
   // If a session exists, redirect the request to the homepage
   if (req.session.logged_in) {
     res.redirect('/');
     return;
   }
-
   res.render('login');
+});
+
+// Logout route
+router.get('/logout', (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect('/homepage');
+    return;
+  }
+  res.render('homepage');
+});
+
+// Signup route
+router.get('/signup', (req, res) => {
+  if(req.session.logged_in) {
+    res.redirect('/homepage');
+    return;
+  }
+  res.render('signup');
+});
+
+// Profile route
+router.get('/profile', withAuth, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.user_id);
+    res.render('profile', { user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
