@@ -4,32 +4,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Registry</title>
-  <link rel="stylesheet" href="/css/jass.css">
+  <title>Tech-Blogspot</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-  <header class="display-flex justify-space-between align-center p-2">
-    <h1>
-      User Registry
-    </h1>
-    <!-- Only display the logout button if the user is logged in -->
+  <header class="header">
+    <h1 class="title">Blog</h1>
     {{#if logged_in}}
-    <nav>
-      <button class="btn" id="logout">logout</button>
-    </nav>
+      <nav>
+        <button class="btn" id="logout">Logout</button>
+      </nav>
     {{/if}}
   </header>
-  <main class="container container-fluid mt-5">
-    {{{ body }}}
+
+  <main class="main">
+    <div class="container">
+      {{#each posts}}
+        <article class="post">
+          <h2>{{title}}</h2>
+          <p>{{content}}</p>
+          <footer class="post-footer">
+            <span>Posted by {{author}} on {{date}}</span>
+            <a href="#" class="comment-link" data-id="{{id}}">{{comments.length}} comments</a>
+          </footer>
+          <div class="comments" id="comments-{{id}}">
+            {{#each comments}}
+              <div class="comment">
+                <h3>{{author}}</h3>
+                <p>{{content}}</p>
+              </div>
+            {{/each}}
+          </div>
+          {{#if logged_in}}
+            <form action="/posts/{{id}}/comments" method="POST" class="comment-form" id="comment-form-{{id}}">
+              <textarea name="content" placeholder="Leave a comment"></textarea>
+              <button type="submit">Submit</button>
+            </form>
+          {{/if}}
+        </article>
+      {{/each}}
+    </div>
   </main>
-  <footer>
-      
+
+  <footer class="footer">
+    <p>&copy; Blog 2023</p>
   </footer>
 
-  <!-- Only include the logout script if the user is logged in -->
   {{#if logged_in}}
-  <script src="/js/logout.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/comment.js"></script>
   {{/if}}
 </body>
 
