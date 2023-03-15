@@ -1,14 +1,14 @@
-import express from 'express';
-import { engine } from 'express-handlebars';
+// import express from 'express';
+// import { engine } from 'express-handlebars';
 
-const app = express();
+// const app = express();
 
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('views', './views');
+// app.engine('handlebars', engine());
+// app.set('view engine', 'handlebars');
+// app.set('views', './views');
 
-app.get('/', (req, res) => {
-    res.render('home');
-});
+// app.get('/', (req, res) => {
+//     res.render('home');
+// });
 
-app.listen(3000);
+// app.listen(3002);
