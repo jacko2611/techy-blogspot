@@ -9,12 +9,26 @@ router.get('/', async (req, res) => {
     const allPosts = await Post.findAll({
       include: [
         {
+          model: Comment,
+          attributes: [
+          'id', 
+          'name', 
+          'comment_content', 
+          'post_id', 
+          'user_id', 
+          'createdAt'
+        ],
+        include: {
           model: User,
-          attributes: ['id', 'name'],
+          attributes: ['name'],
         },
-      ],
-      required: true,
-    });
+      },
+      {
+        model: User,
+        attributes: ['name'],
+      },
+    ],
+  });
   
     const mappedPosts = allPosts.map((post => ({
       id: post.id,
@@ -68,5 +82,64 @@ router.get('/profile', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+// Dashboard route
+router.get('/dashboard', withAuth, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.user_id);
+    res.render('dashboard', { user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
+// Post route
+router.get('/posts/:id', async (req, res) => {
+  try {
+    const postData = await Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+     attributes: ['id', 'title', 'post_content', 'created_at', 'user_id'],
+      include: [
+        {
+          model: Comment,
+          attributes: [
+            'id',
+            'comment_content',
+            'post_id',
+            'user_id',
+            'created_at',
+          ],
+          include: {
+            model: User,
+            attributes: ['name'],
+          },
+        },
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
+    });
+    if (!postData) {
+      res.status(404).json({ message: 'No post found with this id' });
+      return;
+    }
+    const post = postData.get({ plain: true });
+    
+    res.render('comment', {
+      post,
+      loggedIn: req.session.loggedIn,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+
+
 
 module.exports = router;
