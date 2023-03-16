@@ -14,28 +14,27 @@ router.get('/', async (req, res) => {
           'id', 
           'comment_content', 
           'post_id', 
-          'user_id', 
+          'user_id',
+          'created_at'
         ],
         include: {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       },
       {
         model: User,
-        attributes: ['name'],
+        attributes: ['username'],
       },
     ],
   });
   
-    const mappedPosts = allPosts.map((post => ({
-      id: post.id,
-      title: post.title,
-      created_date: post.createdAt,
-      updated_date: post.updatedAt,
-      user: post.user.name,
-    })))
+    const posts = allPosts.map((post) => post.get({ plain: true }));
 
+    res.render('homepage', {
+      posts,
+      loggedIn: req.session.logged_in,
+    });
   } catch (err) {
     console.error(err)
     res.status(500).json(err);
@@ -64,7 +63,7 @@ router.get('/logout', (req, res) => {
 // Signup route
 router.get('/signup', (req, res) => {
   if(req.session.logged_in) {
-    res.redirect('/homepage');
+    res.redirect('/');
     return;
   }
   res.render('signup');
@@ -82,15 +81,15 @@ router.get('/profile', withAuth, async (req, res) => {
 });
 
 // Dashboard route
-router.get('/dashboard', withAuth, async (req, res) => {
-  try {
-    const user = await User.findByPk(req.session.user_id);
-    res.render('dashboard', { user });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
-  }
-});
+// router.get('/dashboard', withAuth, async (req, res) => {
+//   try {
+//     const user = await User.findByPk(req.session.user_id);
+//     res.render('dashboard', { user });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json(err);
+//   }
+// });
 
 // Post route
 router.get('/posts/:id', async (req, res) => {
@@ -108,16 +107,16 @@ router.get('/posts/:id', async (req, res) => {
             'comment_content',
             'post_id',
             'user_id',
-            // 'created_at',
+            'created_at',
           ],
           include: {
             model: User,
-            attributes: ['name'],
+            attributes: ['username'],
           },
         },
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['username'],
         },
       ],
     });
@@ -135,9 +134,5 @@ router.get('/posts/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-
-
-
 
 module.exports = router;
