@@ -11,7 +11,7 @@ const seedAll = async () => {
   console.log('\n----- Users are SYNCED -----\n');
 
   await seedBlogs();
-  console.log('\n----- Blogs are SYNCED -----\n');
+  console.log('\n----- Posts are SYNCED -----\n');
 
   await seedComments();
   console.log('\n----- Comments are SYNCED -----\n');
