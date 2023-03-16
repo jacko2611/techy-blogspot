@@ -26,10 +26,10 @@
           <p>{{content}}</p>
           <footer class="post-footer">
             <span>Posted by {{author}} on {{date}}</span>
-            <a href="#" class="comment-link" data-id="{{id}}">{{comments.length}} comments</a>
+            <a href="#" class="comment-link" data-id="{{id}}">{{comment.length}} comments</a>
           </footer>
-          <div class="comments" id="comments-{{id}}">
-            {{#each comments}}
+          <div class="comment" id="comment-{{id}}">
+            {{#each comment}}
               <div class="comment">
                 <h3>{{author}}</h3>
                 <p>{{content}}</p>

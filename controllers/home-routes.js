@@ -12,11 +12,9 @@ router.get('/', async (req, res) => {
           model: Comment,
           attributes: [
           'id', 
-          'name', 
           'comment_content', 
           'post_id', 
           'user_id', 
-          'createdAt'
         ],
         include: {
           model: User,
@@ -101,7 +99,7 @@ router.get('/posts/:id', async (req, res) => {
       where: {
         id: req.params.id,
       },
-     attributes: ['id', 'title', 'post_content', 'created_at', 'user_id'],
+     attributes: ['id', 'title', 'post_content', 'user_id'],
       include: [
         {
           model: Comment,
@@ -110,7 +108,7 @@ router.get('/posts/:id', async (req, res) => {
             'comment_content',
             'post_id',
             'user_id',
-            'created_at',
+            // 'created_at',
           ],
           include: {
             model: User,
