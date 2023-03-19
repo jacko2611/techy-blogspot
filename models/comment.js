@@ -30,10 +30,6 @@ Comment.init(
         key: 'id'
       }
     },
-    // created_at: {
-    //   type: DataTypes.DATE,
-    //   defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    // }
   },
   {
     sequelize,

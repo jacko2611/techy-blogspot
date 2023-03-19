@@ -15,21 +15,22 @@ router.get('/', async (req, res) => {
           'comment_content', 
           'post_id', 
           'user_id',
-          'created_at'
         ],
         include: {
           model: User,
-          attributes: ['username'],
+          attributes: ['name'],
         },
       },
       {
         model: User,
-        attributes: ['username'],
+        attributes: ['name'],
       },
     ],
   });
+
   
-    const posts = allPosts.map((post) => post.get({ plain: true }));
+  const posts = allPosts.map((post) => post.get({ plain: true }));
+  console.log(posts);
 
     res.render('homepage', {
       posts,

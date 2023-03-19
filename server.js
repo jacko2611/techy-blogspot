@@ -14,9 +14,12 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const app = express();
 const PORT = process.env.PORT || 3007;
 
+const partialsDir = __dirname + '/views/partials';
+
 const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: '.hbs',
+    partialsDir: partialsDir
 });
 
 // Configure and link a session object with the sequelize store
@@ -33,8 +36,8 @@ const sess = {
 // Add express-session and store as Express.js middleware
 app.use(session(sess));
 
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));

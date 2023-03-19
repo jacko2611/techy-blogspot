@@ -3,6 +3,8 @@ const seedComments = require('./commentSeed.js');
 const seedUsers = require('./userSeed.js');
 const sequelize = require('../config/connection');
 
+const saltRounds = 10;
+
 const seedAll = async () => {
   await sequelize.sync({ force: true });
   console.log('\n----- DATABASE SYNCED -----\n');

@@ -10,25 +10,24 @@ router.get('/', withAuth, async (req, res) => {
       where: {
         user_id: req.session.user_id,
       },
-      attributes: ['id', 'title', 'content', 'created_at'],
+      attributes: ['id', 'title', 'content'],
       include: [
         {
           model: Comment,
           attributes: [
             'id',
-            'comment_text',
+            'comment_content',
             'post_id',
-            'user_id',
-            'created_at'
+            'user_id'
           ],
           include: {
             model: User,
-            attributes: ['username']
+            attributes: ['name']
           }
         },
         {
           model: User,
-          attributes: ['username']
+          attributes: ['name']
         },
       ],
     });
@@ -52,25 +51,24 @@ router.get('/edit/:id', withAuth, async (req, res) => {
       where: {
         id: req.params.id,
       },
-      attributes: ['id', 'title', 'created_at', 'content'],
+      attributes: ['id', 'title', 'content'],
       include: [
         {
           model: Comment,
           attributes: [
             'id',
-            'comment_text',
+            'comment_content',
             'post_id',
             'user_id',
-            'created_at',
           ],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['name'],
           },
         },
         {
           model: User,
-          attributes: ['username'],
+          attributes: ['name'],
         },
       ],
     });
@@ -97,25 +95,24 @@ router.get('/create/', withAuth, async (req, res) => {
 
         user_id: req.session.user_id,
       },
-      attributes: ['id', 'title', 'created_at', 'content'],
+      attributes: ['id', 'title', 'content'],
       include: [
         {
           model: Comment,
           attributes: [
             'id',
-            'comment_text',
+            'comment_content',
             'post_id',
             'user_id',
-            'created_at',
           ],
           include: {
             model: User,
-            attributes: ['username'],
+            attributes: ['name'],
           },
         },
         {
           model: User,
-          attributes: ['username'],
+          attributes: ['name'],
         },
       ],
     });

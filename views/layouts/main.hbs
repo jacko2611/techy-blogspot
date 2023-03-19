@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blogspot</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/jass.css">
+  </head>
+  <body>
+    <div class='wrapper d-flex justify-space-around'>
+      <nav>
+        <h1 class=' d-flex align-center p-2 m-4'>Tech Blog: A place to express your thoughts
+          <span role="img" class='m-4' aria-label="writing-hand">✍️</span>
+        </h1>
+        <nav class='navbar mt-2'></nav>
+
+        {{#if loggedIn}}
+
+        <a href="/" class='navbar-item navbar-item-action active" aria-current="true"" pt-1'>Homepage</a>
+        <a href="/dashboard" class='navbar-item navbar-item-action active" aria-current="true"" pt-1'>Dashboard</a>
+        <a href="/dashboard/create/" class='navbar-item navbar-item-action active" aria-current="true"" pt-1 mr-4'>Create a Post</a>
+        <button id='logout' class='btn btn-danger'>Logout</button>
+
+        {{else}}
+      
+        <a href="/" class='navbar-item navbar-item-action active" aria-current="true"" pt-1'>Homepage</a>
+        <a href="/login" class='btn btn-primary'>Login</a>
+      
+        {{/if}}
+
+      </nav>
+    
+      <main class="container container-fluid mt-5">
+        
+        {{{ body }}}
+      </main>
+    
+      <footer class='container bottoming pb-2'>
+        <div class='col-2 d-flex justify-space-between'>
+          <p>
+            <a class='part-footer' href='/'>Homepage</a>
+            
+            {{#if loggedIn}} |
+
+            <a class='part-footer' href='/dashboard/'>Dashboard</a> |
+            <a class='part-footer' href='/dashboard/create/'>Create a new post</a>
+          
+            {{else}}
+          
+            <a href='/login/'>Login</a>
+          
+            {{/if}}
+          </p>
+        </div>
+
+        <div class='col-8 d-flex justify-space-between'>
+          <p>
+            <a class='part-footer' href='/'>Homepage</a> |
+            <a class='part-footer' href='/dashboard/'>Dashboard</a> |
+            <a class='part-footer' href='/dashboard/create/'>Create a new post</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  
+    {{#if loggedIn}}
+
+    <script src='/js/logout.js'></script>
+
+    {{/if}}
+
+  </body>
+
+</html>
